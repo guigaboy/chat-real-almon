@@ -1,0 +1,77 @@
+html,
+body {
+  height: 100%;
+  background-color: #f8f8f8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#titulo {
+  width: 100vw;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-family: sans-serif;
+  font-size: 40px;
+  color: rgb(39, 39, 39);
+}
+
+#chat {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+input {
+  width: 600px;
+  border: 1px solid #ddd;
+  height: 50px;
+  padding: 0 20px;
+  font-size: 14px;
+}
+
+button {
+  width: 600px;
+  height: 50px;
+  font-size: 14px;
+  background: rgb(223, 223, 223);
+  color: rgb(110, 110, 110);
+  text-align: center;
+  line-height: 50px;
+  font-weight: bold;
+  margin-top: 10px;
+  border: none;
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+button:hover {
+  opacity: 1;
+}
+
+button:active {
+  background: rgb(187, 186, 186);
+  color: rgb(77, 75, 75);
+  opacity: 1;
+}
+
+.messages {
+  width: 600px;
+  height: 400px;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+#autor {
+  color: red;
+}

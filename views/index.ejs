@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RealTime Chat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js" integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+<body>
+
+
+    <form id="chat">
+        <div id="titulo">
+            <h1>ALMONDEGAS</h1>
+        </div>
+    
+        <input type="text" name="username" placeholder="Usuário...">
+        <div class="messages" id="messages">
+            <% historico.forEach(i => { %>
+                <strong><%=i.author %></strong>: <%= i.message %><br>     
+            <% }) %> 
+        </div>
+        <input type="text" name="message" placeholder="Mensagem...">
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script type="text/javascript">
+        var socket = io('/');                               //io('url') é declarado pelo script socket.io.js declarado no head; Escuta a conexão com o beckEnd e cria uma conexão WebSocket
+
+        function scrollToBottom(){
+          document.getElementById("messages").scrollTop = messages.scrollHeight;
+        }
+
+        scrollToBottom()
+
+        function getRandomColor() {
+          var letters = '0123456789ABCDEF';
+          var color = '#';
+          for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+          }
+          return color;
+        }
+
+        function renderMessage(message){
+            $('.messages').append(`<div class="message"><strong style="color:${getRandomColor()}">${message.author}</strong>:${message.message}</div>`);
+            scrollToBottom()
+        }
+
+        socket.on('receivedMessage', function(message){
+            renderMessage(message);
+        })
+
+        $('#chat').submit(function(event){                  //Quando a tag de id "#chat" receber o evento submit...
+            event.preventDefault();                         //Não envia o formulário
+
+            let author = $('input[name=username]').val();   //Declara "author" como o valor ".val()" da tag input que possui name = username
+            let message = $('input[name=message]').val();   //Declara "message" como o valor ".val()" da tag input que possui name = message
+
+            if(author.length && message.length){
+                let messageObject = {
+                    author  : author,
+                    message : message
+                };
+
+                renderMessage(messageObject);
+
+                socket.emit('sendMessage', messageObject);  //Envia o evento "sendMessage" para o beckEnd com o objeto messageObject
+            };
+
+        });
+    </script>
+    
+</body>
+</html>
